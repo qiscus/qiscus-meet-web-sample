@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Qiscus Meet - Sample</title>
+  </head>
+  <body>
+    <h2>Qiscus Meet - Sample</h2>
+    <div id="call-form">
+      <div style="margin-bottom: 20px">
+        Your Name: <input type="text" id="userName" readonly />
+      </div>
+      <div style="margin-bottom: 20px">
+        Room Name: <input type="text" id="roomName" readonly />
+      </div>
+      <a id="call-button">
+        <button>Call Other User</button>
+      </a>
+    </div>
+
+    <div id="meet" style="height: 800px"></div>
+  </body>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+
+  <!-- Qiscus Meet  -->
+  <script src="https://call.qiscus.com/v2/qiscus_external_api.min.js"></script>
+
+  <!-- Meet Config  -->
+  <script src="meet-config.js"></script>
+  <script src="firebase-functions.js"></script>
+
+  <script>
+    const callButton = document.getElementById("call-button");
+    const callForm = document.getElementById("call-form");
+    const meet = document.getElementById("meet");
+
+    // Trigger Call Button
+    callButton.onclick = async function () {
+      const url =
+        "http://localhost:8080/send_call.php?user=" +
+        userName +
+        "&room=" +
+        roomName +
+        "&token=fdYK3UQyrte5eKi9KZqesy:APA91bFFnRsM4QxUmD8Ag9lLb2Xck_RIKwSnkxukc8sp6FwAoZE6Q9nYGNREe3PHQZSzLvk-IfP7CI5vaxHp5g-gpMLmMTy9eSpMmXdgd-sQxhXLKQtDwBBm_hYbefCxeCuxU1uLQArv";
+      const response = await fetch(url, {
+        method: "get",
+      });
+
+      meet.style.display = "block";
+      callForm.style.display = "none";
+      var api = new QiscusMeetExternalAPI(domain, options, data);
+    };
+  </script>
+</html>
