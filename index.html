@@ -39,12 +39,16 @@
 
     // Trigger Call Button
     callButton.onclick = async function () {
+      // Get token from firebaes-function.js
+      const token =
+        "fdYK3UQyrte5eKi9KZqesy:APA91bFFnRsM4QxUmD8Ag9lLb2Xck_RIKwSnkxukc8sp6FwAoZE6Q9nYGNREe3PHQZSzLvk-IfP7CI5vaxHp5g-gpMLmMTy9eSpMmXdgd-sQxhXLKQtDwBBm_hYbefCxeCuxU1uLQArv";
       const url =
         "http://localhost:8080/send_call.php?user=" +
         userName +
         "&room=" +
         roomName +
-        "&token=fdYK3UQyrte5eKi9KZqesy:APA91bFFnRsM4QxUmD8Ag9lLb2Xck_RIKwSnkxukc8sp6FwAoZE6Q9nYGNREe3PHQZSzLvk-IfP7CI5vaxHp5g-gpMLmMTy9eSpMmXdgd-sQxhXLKQtDwBBm_hYbefCxeCuxU1uLQArv";
+        "&token=" +
+        token;
       const response = await fetch(url, {
         method: "get",
       });

@@ -21,6 +21,7 @@ function IntitalizeFireBaseMessaging() {
       return messaging.getToken();
     })
     .then(function (token) {
+      // Get token from here
       console.log("Token: " + token);
     })
     .catch(function (err) {
