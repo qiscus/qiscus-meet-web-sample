@@ -7,7 +7,6 @@ const roomName = (document.getElementById(
 ).value = Math.random().toString(36).substring(2, 7));
 
 // Qiscus Meet Config
-var room = roomName;
 var domain = "call.qiscus.com";
 var data = {
   avatar: "",
@@ -17,7 +16,7 @@ var data = {
   moderator: false,
 };
 var options = {
-  roomName: room,
+  roomName: roomName,
   parentNode: document.querySelector("#meet"),
   configOverwrite: {
     startWithAudioMuted: true,
