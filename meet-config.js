@@ -9,9 +9,9 @@ const roomName = (document.getElementById(
 // Qiscus Meet Config
 var domain = "call.qiscus.com";
 var data = {
-  avatar: "",
   name: userName,
-  email: "sample@mail.com",
+  email: "sample-meet@qiscus.com",
+  avatar: "",
   appId: "meetstage-iec22sd",
   moderator: false,
 };
@@ -30,5 +30,9 @@ var options = {
     APP_NAME: "Qiscus",
     NATIVE_APP_NAME: "Qiscus",
     PROVIDER_NAME: "Qiscus",
+  },
+  userInfo: {
+    email: "email@jitsiexamplemail.com",
+    displayName: userName,
   },
 };
