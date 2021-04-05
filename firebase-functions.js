@@ -43,7 +43,7 @@ messaging.onMessage(async function (payload) {
   ) {
     const call = confirm(payload.notification.title + " is calling you");
 
-    // Trigger when target user answer the call
+    // Trigger when target user answered the call
     if (call) {
       setTimeout(function () {
         callForm.style.display = "none";
@@ -53,7 +53,7 @@ messaging.onMessage(async function (payload) {
         var api = new QiscusMeetExternalAPI(domain, options, data);
       }, 3000);
     }
-    // Trigger when target user decline the call
+    // Trigger when target user declined the call
     else {
       const url =
         "http://localhost:8080/send_call.php?user=" +
