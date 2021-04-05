@@ -1,4 +1,4 @@
-# Demo: 
+# Demo
 #### Link: https://drive.google.com/file/d/14ov6bOgoFFxAIA64WHBErIVCmiWavUx3/view?usp=sharing
 # Local Installation
 
