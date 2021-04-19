@@ -9,18 +9,18 @@ const roomName = (document.getElementById(
 // Qiscus Meet Config
 const domain = "call.qiscus.com";
 const appId = "meetstage-iec22sd";
-const room = "testruangan";
 const data = {
   avatar: "",
   name: userName,
   email: "sample-meet@qiscus.com",
   appId: appId,
+  room: roomName,
   moderator: true,
 };
-const core = new QiscusMeetCoreAPI();
-const options = core.getJWT(data).then((res) => {
+let core = new QiscusMeetCoreAPI();
+let options = core.getJWT(data).then((res) => {
   return {
-    roomName: roomName,
+    roomName: appId + "/" + roomName,
     parentNode: document.querySelector("#meet"),
     configOverwrite: {
       startWithAudioMuted: true,
