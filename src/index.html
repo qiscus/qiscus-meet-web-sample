@@ -20,43 +20,40 @@
 
     <div id="meet" style="height: 800px"></div>
   </body>
-
   <!-- Firebase -->
+  <script src="./js/config/firebase-config.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
 
   <!-- Qiscus Meet  -->
   <script src="https://call.qiscus.com/v2/qiscus_external_api.min.js"></script>
+  <script src="https://call.qiscus.com/v2/qiscus_core_api.min.js"></script>
 
   <!-- Meet Config  -->
-  <script src="meet-config.js"></script>
-  <script src="firebase-functions.js"></script>
+  <script src="./js/send_call.js"></script>
+  <script src="./js/config/meet-config.js"></script>
+  <script src="./js/firebase-functions.js"></script>
 
   <script>
     const callButton = document.getElementById("call-button");
     const callForm = document.getElementById("call-form");
     const meet = document.getElementById("meet");
-
+    let token;
     // Trigger Call Button
     callButton.onclick = async function () {
-      // Get token from firebaes-function.js
-      const token =
-        "fdYK3UQyrte5eKi9KZqesy:APA91bFFnRsM4QxUmD8Ag9lLb2Xck_RIKwSnkxukc8sp6FwAoZE6Q9nYGNREe3PHQZSzLvk-IfP7CI5vaxHp5g-gpMLmMTy9eSpMmXdgd-sQxhXLKQtDwBBm_hYbefCxeCuxU1uLQArv";
-      const url =
-        "http://localhost:8080/send_call.php?user=" +
-        userName +
-        "&room=" +
-        roomName +
-        "&token=" +
-        token;
-      const response = await fetch(url, {
-        method: "get",
-      });
+      // Trigger FCM when Calling
+      await call(token, userName, roomName);
 
+      // Show Qiscus Meet
       meet.style.display = "block";
       callForm.style.display = "none";
-      
-      var api = new QiscusMeetExternalAPI(domain, options, data);
+
+      const api = new QiscusMeetExternalAPI(domain, await options);
+
+      // Qiscus API for endcall
+      await api.meet.on("videoConferenceLeft", (data) => {
+        console.log("endcall");
+      });
     };
   </script>
 </html>

@@ -1,0 +1,22 @@
+{
+  "name": "meetweb-sample",
+  "version": "1.0.0",
+  "description": "#### 1. Change firebase-config into your own credentials",
+  "main": "firebase-functions.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://rafidqiscus@bitbucket.org/qiscus/qiscus-meet-web-sdk-sample.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/qiscus/qiscus-meet-web-sdk-sample#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7"
+  }
+}
