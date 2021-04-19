@@ -4,17 +4,8 @@ const messaging = firebase.messaging();
 
 const IntitalizeFireBaseMessaging = async () => {
   await messaging.requestPermission();
-  const res = await messaging.getToken();
-  token = await res;
-};
-
-// Calling validation
-const isCalling = (permission, callerName, status) => {
-  return permission === "granted" &&
-    callerName !== userName &&
-    status !== "reject"
-    ? true
-    : false;
+  const result = await messaging.getToken();
+  token = await result;
 };
 
 // Listening for FCM
@@ -25,7 +16,7 @@ messaging.onMessage(async (payload) => {
 
   // Check call attributes request
   if (
-    isCalling(
+    isValid(
       Notification.permission,
       payload.notification.title,
       notificationOption.roomName
@@ -36,8 +27,8 @@ messaging.onMessage(async (payload) => {
     // Trigger when target user answered the call
     if (isAnswered) {
       setTimeout(async () => {
-        callForm.style.display = "none";
-        meet.style.display = "block";
+        callForm.style.display = HIDE;
+        meet.style.display = SHOW;
 
         options.roomName = notificationOption.roomName;
         api = new QiscusMeetExternalAPI(domain, await options);
@@ -45,19 +36,18 @@ messaging.onMessage(async (payload) => {
     }
     // Trigger FCM when targeted user rejected the call
     else {
-      const REJECT_CALL = "reject";
       await call(token, userName, REJECT_CALL);
     }
     // Close meet after target user declined the call
   } else {
-    meet.style.display = "none";
-    callForm.style.display = "block";
+    meet.style.display = HIDE;
+    callForm.style.display = SHOW;
   }
 });
 
 messaging.onTokenRefresh(async () => {
-  const res = await messaging.getToken();
-  console.log("New Token:" + res);
+  const result = await messaging.getToken();
+  console.log("New Token:" + result);
 });
 
 IntitalizeFireBaseMessaging();

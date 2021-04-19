@@ -22,6 +22,7 @@
   </body>
 
   <!-- Firebase -->
+  <script src="./js/lib/const.js"></script>
   <script src="./js/config/firebase-config.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
@@ -46,8 +47,8 @@
       await call(token, userName, roomName);
 
       // Show Qiscus Meet
-      meet.style.display = "block";
-      callForm.style.display = "none";
+      meet.style.display = SHOW;
+      callForm.style.display = HIDE;
 
       const api = new QiscusMeetExternalAPI(domain, await options);
 
