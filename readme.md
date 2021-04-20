@@ -7,3 +7,5 @@
 #### 2. Run `npm install`
 
 #### 3. Run `npm run dev` in 2 tabs
+
+#### 4. Inspect element on both pages so the confirmation alert will shown
