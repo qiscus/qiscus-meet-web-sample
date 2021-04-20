@@ -43,26 +43,19 @@
     let token;
     // Trigger Call Button
     callButton.onclick = async function () {
+      const room = appId + "/" + roomName;
       // Trigger FCM when Calling
-      await call(token, userName, appId + "/" + roomName);
+      await notify(token, userName, room);
 
       // Show Qiscus Meet
-      meet.style.display = SHOW;
-      callForm.style.display = HIDE;
+      startCall();
+      const data = getData(userName, roomName);
+      const options = await getOptions(data, userName, room);
 
-      let api = new QiscusMeetExternalAPI(domain, await options);
+      let api = await new QiscusMeetExternalAPI(domain, options);
 
-      // Qiscus API for endcall
-      await api.meet.on("videoConferenceLeft", async (data) => {
-        console.log("you ended the call");
-        await call(token, userName, END_CALL);
-        window.location.href = '/'
-      });
-
-      await api.meet.on("participantLeft", async (data) => {
-        console.log("call ended by other user");
-        window.location.href = '/'
-      });
+      // Triggered when user end the call
+      await endCallCallback(api);
     };
   </script>
 </html>

@@ -4,6 +4,7 @@ const messaging = firebase.messaging();
 
 const IntitalizeFireBaseMessaging = async () => {
   await messaging.requestPermission();
+
   const result = await messaging.getToken();
   token = await result;
 };
@@ -16,81 +17,45 @@ messaging.onMessage(async (payload) => {
 
   // Check call attributes request
   if (
-    isValid(
+    isValidCall(
       Notification.permission,
       payload.notification.title,
       notificationOption.roomName
     )
   ) {
     let isAnswered;
+
     if (notificationOption.roomName === END_CALL) {
-      callForm.style.display = SHOW;
-      meet.style.display = HIDE;
+      destroyCall();
     } else {
       isAnswered = confirm(payload.notification.title + " is calling you");
-    }
+      // Triggered when targeted user answered the call
+      if (isAnswered) {
+        setTimeout(async () => {
+          startCall();
+          const roomName = notificationOption.roomName.split("/")[1];
+          const room = notificationOption.roomName;
+          const data = getData(userName, roomName);
+          const options = await getOptions(data, userName, room);
 
-    // Trigger when targeted user answered the call
-    if (isAnswered) {
-      setTimeout(async () => {
-        callForm.style.display = HIDE;
-        meet.style.display = SHOW;
-        const data = {
-          avatar: "",
-          name: userName,
-          email: "sample-meet@qiscus.com",
-          appId: appId,
-          room: notificationOption.roomName.split("/")[1],
-          moderator: true,
-        };
-        core = new QiscusMeetCoreAPI();
-        options = core.getJWT(data).then((res) => {
-          return {
-            roomName: notificationOption.roomName,
-            parentNode: document.querySelector("#meet"),
-            configOverwrite: {
-              startWithAudioMuted: true,
-              startWithVideoMuted: true,
-            },
-            interfaceConfigOverwrite: {
-              TOOLBAR_BUTTONS: ["microphone", "camera", "hangup"],
-              VIDEO_LAYOUT_FIT: "both",
-              DEFAULT_REMOTE_DISPLAY_NAME: "Guest",
-              DISPLAY_WELCOME_PAGE_CONTENT: false,
-              APP_NAME: "Qiscus",
-              NATIVE_APP_NAME: "Qiscus",
-              PROVIDER_NAME: "Qiscus",
-            },
-            userInfo: {
-              email: "email@jitsiexamplemail.com",
-              displayName: userName,
-            },
-            jwt: res.token,
-          };
-        });
-        api = await new QiscusMeetExternalAPI(domain, await options);
-        // Qiscus API for endcall
-        await api.meet.on("videoConferenceLeft", async (data) => {
-          console.log("you ended the call");
-          await call(token, userName, END_CALL);
-          window.location.href = "/";
-        });
+          api = await new QiscusMeetExternalAPI(domain, options);
 
-        await api.meet.on("participantLeft", async (data) => {
-          console.log("call ended by other user");
-          window.location.href = "/";
-        });
-      }, 3000);
+          // Triggered when user end the call
+          await endCallCallback(api);
+        }, 3000);
+      } else {
+        // Trigger FCM when targeted user rejected the call
+        await notify(token, userName, REJECT_CALL);
+      }
     }
-    // Trigger FCM when targeted user rejected the call
-    else {
-      await call(token, userName, REJECT_CALL);
-    }
+  } else {
+    destroyCall();
   }
 });
 
 messaging.onTokenRefresh(async () => {
   const result = await messaging.getToken();
+
   console.log("New Token:" + result);
 });
 
