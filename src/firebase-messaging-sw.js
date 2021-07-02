@@ -3,7 +3,7 @@ importScripts(
   "https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"
 );
 importScripts(
-  "./config/firebase-config.js"
+  "./js/config/firebase-config.js"
 );
 
 firebase.initializeApp(firebaseConfig);
