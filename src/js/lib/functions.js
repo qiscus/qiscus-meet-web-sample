@@ -23,10 +23,10 @@ const notify = async (token, user, room) => {
 };
 
 // Call validation
-const isValidCall = (permission, callerName, status) => {
-  return permission === GRANT_CALL &&
-    callerName !== userName &&
-    status !== REJECT_CALL
+const isValidCall = (userName, permission, callerName, status) => {
+  return permission == GRANT_CALL &&
+    callerName != userName &&
+    status != REJECT_CALL
     ? true
     : false;
 };

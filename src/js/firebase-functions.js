@@ -18,6 +18,7 @@ messaging.onMessage(async (payload) => {
   // Check call attributes request
   if (
     isValidCall(
+      userName,
       Notification.permission,
       payload.notification.title,
       notificationOption.roomName
@@ -46,8 +47,22 @@ messaging.onMessage(async (payload) => {
       } else {
         // Trigger FCM when targeted user rejected the call
         await notify(token, userName, REJECT_CALL);
+        window.location.href = "/";
       }
     }
+  } else if(payload.notification.title == userName && status != REJECT_CALL) {
+    setTimeout(async () => {
+      startCall();
+      const roomName = notificationOption.roomName.split("/")[1];
+      const room = notificationOption.roomName;
+      const data = getData(userName, roomName);
+      const options = await getOptions(data, userName, room);
+
+      api = await new QiscusMeetExternalAPI(domain, options);
+
+      // Triggered when user end the call
+      await endCallCallback(api);
+    }, 3000);
   } else {
     destroyCall();
   }
