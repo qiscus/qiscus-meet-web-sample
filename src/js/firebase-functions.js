@@ -53,15 +53,6 @@ messaging.onMessage(async (payload) => {
   } else if(payload.notification.title == userName && status != REJECT_CALL) {
     setTimeout(async () => {
       startCall();
-      const roomName = notificationOption.roomName.split("/")[1];
-      const room = notificationOption.roomName;
-      const data = getData(userName, roomName);
-      const options = await getOptions(data, userName, room);
-
-      api = await new QiscusMeetExternalAPI(domain, options);
-
-      // Triggered when user end the call
-      await endCallCallback(api);
     }, 3000);
   } else {
     destroyCall();
