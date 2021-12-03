@@ -6,4 +6,4 @@
 
 #### 2. Run `npm install`
 
-#### 3. Run `npm run dev` in 2 tabs
+#### 3. Run `npm run dev` and run application in 2 tabs
