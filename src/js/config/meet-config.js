@@ -8,7 +8,7 @@ const roomName = (document.getElementById(
 
 // Qiscus Meet Config
 const domain = "call.qiscus.com";
-const appId = "meetstage-iec22sd";
+const appId = "your-app-id";
 const data = {
   avatar: "",
   name: userName,
