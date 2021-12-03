@@ -34,19 +34,15 @@ const isValidCall = (userName, permission, callerName, status) => {
 const endCallCallback = async (api) => {
   // Trigger when user ended the call
   await api.meet.on("videoConferenceLeft", async () => {
-    console.log("you ended the call");
-
     // Notify other user
     await notify(token, userName, END_CALL);
 
-    window.location.href = "/";
+    destroyCall("Call ended");
   });
 
   // Trigger when other user ended the call
   await api.meet.on("participantLeft", () => {
-    console.log("call ended by other user");
-
-    window.location.href = "/";
+    destroyCall("Call ended");
   });
 };
 
@@ -56,8 +52,16 @@ const startCall = () => {
   meet.style.display = SHOW;
 };
 
-const destroyCall = () => {
-  window.location.href = "/";
+const destroyCall = (msg) => {
+  $("#modal").modal("hide");
+  $("#modal-notification").modal("show");
+  $("#modal-notification-body")
+    .empty()
+    .append("<p>" + msg + "</p>");
+
+  setTimeout(async () => {
+    window.location.href = "/";
+  }, 3000);
 };
 
 const getOptions = async (data, userName, roomName) => {

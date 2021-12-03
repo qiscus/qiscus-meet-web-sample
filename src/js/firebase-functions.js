@@ -24,14 +24,16 @@ messaging.onMessage(async (payload) => {
       notificationOption.roomName
     )
   ) {
-    let isAnswered;
-
     if (notificationOption.roomName === END_CALL) {
-      destroyCall();
+      destroyCall("Call ended");
     } else {
-      isAnswered = confirm(payload.notification.title + " is calling you");
+      $("#modal").modal("show");
+      $("#modal-body")
+        .empty()
+        .append("<p>" + payload.notification.title + " is calling...</p>");
+
       // Triggered when targeted user answered the call
-      if (isAnswered) {
+      $("#accept-call").click(async () => {
         setTimeout(async () => {
           startCall();
           const roomName = notificationOption.roomName.split("/")[1];
@@ -44,18 +46,20 @@ messaging.onMessage(async (payload) => {
           // Triggered when user end the call
           await endCallCallback(api);
         }, 3000);
-      } else {
-        // Trigger FCM when targeted user rejected the call
+      });
+
+      // Trigger FCM when targeted user rejected the call
+      $("#reject-call").click(async () => {
         await notify(token, userName, REJECT_CALL);
-        window.location.href = "/";
-      }
+        destroyCall("Call rejected");
+      });
     }
-  } else if(payload.notification.title == userName && status != REJECT_CALL) {
+  } else if (payload.notification.title == userName && status != REJECT_CALL) {
     setTimeout(async () => {
       startCall();
     }, 3000);
   } else {
-    destroyCall();
+    destroyCall("Call ended");
   }
 });
 
