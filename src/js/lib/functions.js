@@ -56,10 +56,8 @@ const startCall = () => {
   meet.style.display = SHOW;
 };
 
-// Hide call iframe
 const destroyCall = () => {
-  callForm.style.display = SHOW;
-  meet.style.display = HIDE;
+  window.location.href = "/";
 };
 
 const getOptions = async (data, userName, roomName) => {
